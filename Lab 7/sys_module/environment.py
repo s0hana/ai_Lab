@@ -12,18 +12,17 @@ class HazzardObject:
         pass
 
 class Environment:
-    def __init__(self, size=100, bio_hazard_number=2000):
-        self.size = size
+    def __init__(self, hi=80, wd=100, bio_hazard_number=2000):
+        self.hi = hi
+        self.wd = wd
         self.bio_hazard_number = bio_hazard_number
-        self.campus = np.zeros((self.size, self.size), dtype=int)
+        self.campus = np.zeros((self.hi, self.wd), dtype=int)
         
         self.non_accessible_info = {
             (2, 3): (15, 14),
             (30, 70): (7, 7),
             (10, 40): (14, 16),
             (52, 5): (12, 13),
-            (80, 3): (10, 12),
-            (80, 80): (10, 10),
             (45, 57): (12, 15)
         }
         
@@ -37,15 +36,15 @@ class Environment:
     def generate_non_accessible(self):
         for (x, y), (h, w) in self.non_accessible_info.items():
             start_x = x
-            end_x = min(x + w, self.size)  
+            end_x = min(x + w, self.hi)  
             start_y = y
-            end_y = min(y + h, self.size) 
+            end_y = min(y + h, self.wd) 
             self.generate_non_accessible_area(start_x, end_x, start_y, end_y)
     
     def generate_humans(self):
         accessible_cells = []
-        for i in range(self.size):
-            for j in range(self.size):
+        for i in range(self.hi):
+            for j in range(self.wd):
                 if self.campus[i, j] == HazzardObject.accessible:
                     accessible_cells.append((i, j))
         
@@ -60,34 +59,34 @@ class Environment:
     def generate_bio_hazard(self):
         count = 0
         while count < self.bio_hazard_number:
-            x = random.randint(0, self.size - 1)
-            y = random.randint(0, self.size - 1)
+            x = random.randint(0, self.hi - 1)
+            y = random.randint(0, self.wd - 1)
             if self.campus[x, y] == HazzardObject.accessible:
                 self.campus[x, y] = HazzardObject.bio_hazard
                 count += 1
     
     def is_accessible(self, x, y):
-        if 0 <= x < self.size and 0 <= y < self.size:
+        if 0 <= x < self.hi and 0 <= y < self.wd:
             return self.campus[x, y] != HazzardObject.non_accessible
         return False
     
     def has_bio_hazard(self, x, y):
-        if 0 <= x < self.size and 0 <= y < self.size:
+        if 0 <= x < self.hi and 0 <= y < self.wd:
             return self.campus[x, y] == HazzardObject.bio_hazard
         return False
     
     def has_human(self, x, y):
-        if 0 <= x < self.size and 0 <= y < self.size:
+        if 0 <= x < self.hi and 0 <= y < self.wd:
             return self.campus[x, y] == HazzardObject.human
         return False
     
     def get_cell_value(self, x, y):
-        if 0 <= x < self.size and 0 <= y < self.size:
+        if 0 <= x < self.hi and 0 <= y < self.wd:
             return self.campus[x, y]
         return None
     
     def set_cell_value(self, x, y, value):
-        if 0 <= x < self.size and 0 <= y < self.size:
+        if 0 <= x < self.hi and 0 <= y < self.wd:
             self.campus[x, y] = value
     
     def display_env(self):
@@ -99,32 +98,32 @@ class Environment:
     
     def get_human_positions(self):
         humans = []
-        for i in range(self.size):
-            for j in range(self.size):
+        for i in range(self.hi):
+            for j in range(self.wd):
                 if self.campus[i, j] == HazzardObject.human:
                     humans.append((i, j))
         return humans
     
     def get_bio_hazard_positions(self):
         hazards = []
-        for i in range(self.size):
-            for j in range(self.size):
+        for i in range(self.hi):
+            for j in range(self.wd):
                 if self.campus[i, j] == HazzardObject.bio_hazard:
                     hazards.append((i, j))
         return hazards
     
     def get_non_accessible_positions(self):
         obstacles = []
-        for i in range(self.size):
-            for j in range(self.size):
+        for i in range(self.hi):
+            for j in range(self.wd):
                 if self.campus[i, j] == HazzardObject.non_accessible:
                     obstacles.append((i, j))
         return obstacles
     
     def get_accessible_positions(self):
         accessible = []
-        for i in range(self.size):
-            for j in range(self.size):
+        for i in range(self.hi):
+            for j in range(self.wd):
                 if self.campus[i, j] == HazzardObject.accessible:
                     accessible.append((i, j))
         return accessible
