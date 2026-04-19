@@ -32,7 +32,10 @@ class Environment:
     
     def generate_non_accessible_area(self, start_x, end_x, start_y, end_y):
         self.campus[start_x:end_x, start_y:end_y] = HazzardObject.non_accessible
-    
+
+    def load_configuration(self, config):
+        self.grid = config 
+        
     def generate_non_accessible(self):
         for (x, y), (h, w) in self.non_accessible_info.items():
             start_x = x
