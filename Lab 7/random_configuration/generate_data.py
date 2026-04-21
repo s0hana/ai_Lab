@@ -5,6 +5,7 @@ import random
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from sys_module.environment import Environment
 
+#generate 100 configuration for probability map
 def save_configurations(n=100, folder=r"D:\3-2\Artificial Intelligence\Lab\Lab 7\random_configuration\configs"):
     if not os.path.exists(folder):
         os.makedirs(folder)
@@ -26,7 +27,7 @@ def calculate_probability_map(n=100, folder=r"D:\3-2\Artificial Intelligence\Lab
         grid = np.load(file_path)
         h, w = grid.shape
         prob_map[:h, :w] += (grid == 1).astype(int)
-    prob_map = prob_map / n
+    prob_map = prob_map / n #this map is used in policy.py of sys_module where statistical_move decides based on threshold,( probability>=threshold)
     return prob_map
 
 if __name__ == "__main__":

@@ -9,7 +9,7 @@ def main():
     #robot.initiate_human()
     #robot.initiate_hazard()
     print("Starting Simulation: ")
-    steps = 5000
+    steps = 2000
     robot.drive(steps)
     print("Simulation is done!")
     print(f"Move History: {robot.move_history}")

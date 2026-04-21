@@ -36,7 +36,7 @@ def main():
         perf = Performance(robot)
         perf.calculate()
 
-        folder = Path(r"D:\3-2\Artificial Intelligence\Lab\Lab 7\output")
+        folder = Path(r"D:\3-2\Artificial Intelligence\Lab\Lab 7\output_environments_new_20_run")
         folder.mkdir(exist_ok=True)
         file_path = folder / f"result{i+1}.txt"
         with open(file_path, "w") as file:

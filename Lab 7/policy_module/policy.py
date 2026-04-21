@@ -15,7 +15,7 @@ class Policy:
     @staticmethod
     def getRandomMove():
         return random.choice(["UP", "DOWN", "LEFT", "RIGHT"])
-
+#function which uses threshold
     def statistical_move(self, robot):
         if self.p_map is None:
             return None
