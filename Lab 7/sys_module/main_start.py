@@ -1,7 +1,7 @@
 import sys
 import os
 import numpy as np
-
+from pathlib import Path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from robo_sys import Robot
@@ -12,14 +12,10 @@ from random_configuration.generate_data import *
 
 def main():
     save_configurations()
+    calculate_probability_map()
     total_runs = 20
     steps_per_run = 2000
 
-    config_folder = r"D:\3-2\Artificial Intelligence\Lab\Lab 7\random_configuration\configs"
-
-    config_files = [f"config_{i}.npy" for i in range(100)]
-
-    selected_configs = np.random.choice(config_files, size=total_runs, replace=False)
 
     all_collected = []
     all_moves = []
@@ -30,16 +26,27 @@ def main():
     for i in range(total_runs):
         print(f"\n>>> Run {i+1} is starting...")
 
-        config_path = os.path.join(config_folder, selected_configs[i])
-        config_data = np.load(config_path, allow_pickle=True)
-
         env = Environment()
-        env.load_configuration(config_data)  
 
         robot = Robot()
         robot.environment = env
 
         robot.drive(steps_per_run)
+
+        perf = Performance(robot)
+        perf.calculate()
+
+        folder = Path(r"D:\3-2\Artificial Intelligence\Lab\Lab 7\output")
+        folder.mkdir(exist_ok=True)
+        file_path = folder / f"result{i+1}.txt"
+        with open(file_path, "w") as file:
+            file.write(f"This is output of run {i+1}: Move history: {robot.move_history}")
+            file.write("Environment Grid:\n")
+    
+            for row in robot.environment.campus:
+                for item in row:
+                    file.write(str(item) + " ")
+                file.write("\n")
 
         collected = len(robot.collected_objects)
         moves = robot.movement_actions
@@ -49,7 +56,7 @@ def main():
         all_moves.append(moves)
         all_human_encounters.append(humans)
 
-        print(f"Run {i+1} Result: Collected: {collected}, Moves: {moves}, Humans: {humans}")
+        print(f"Run {i+1} Result: Collected: {collected}, Moves: {moves}, Humans Encounters: {humans}")
 
     print("\n" + "="*40)
     print("      OVERALL PERFORMANCE REPORT")
@@ -65,6 +72,7 @@ def main():
     print(f"Average Moves per Run: {avg_moves:.2f}")
     print(f"Total Human Encounters: {sum(all_human_encounters)}")
     print(f"Overall Efficiency (Success Rate): {total_efficiency:.4f}%")
+    print(f"Error Rate: {100 - total_efficiency: .4f}%")
     print("="*40)
 
 

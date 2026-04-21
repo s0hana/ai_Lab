@@ -35,7 +35,7 @@ class Policy:
             dx, dy = delta[d]
             nx, ny = robot.position.x + dx, robot.position.y + dy
 
-            if 0 <= nx < 100 and 0 <= ny < 100:
+            if 0 <= nx < 100 and 0 <= ny < 200:
                 current_p = self.p_map[nx, ny]
                 if current_p >= self.threshold and current_p > max_prob:
                     if robot.can_move(nx, ny, allow_visited=True):

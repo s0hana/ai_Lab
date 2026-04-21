@@ -10,8 +10,8 @@ def save_configurations(n=100, folder=r"D:\3-2\Artificial Intelligence\Lab\Lab 7
         os.makedirs(folder)
 
     for i in range(n):
-        hi = random.randint(80, 200)
-        wd = random.randint(100, 200)
+        hi = 100
+        wd = 100
         env = Environment(hi=hi, wd=wd) 
         
         file_path = os.path.join(folder, f"config_{i}.npy")
@@ -20,7 +20,7 @@ def save_configurations(n=100, folder=r"D:\3-2\Artificial Intelligence\Lab\Lab 7
     print(f"Successfully saved {n} configurations in '{folder}' folder.")
 
 def calculate_probability_map(n=100, folder=r"D:\3-2\Artificial Intelligence\Lab\Lab 7\random_configuration\configs"):
-    prob_map = np.zeros((200, 200))
+    prob_map = np.zeros((100, 100))
     for i in range(n):
         file_path = os.path.join(folder, f"config_{i}.npy")
         grid = np.load(file_path)
